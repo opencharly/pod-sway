@@ -12,7 +12,7 @@ sway:
             Every claim below is observable: the binary, the package, the staged
             files, and the live service.
         require:
-            - dbus
+            - '@github.com/opencharly/pod-dbus:v2026.235.2115'
         env:
             WLR_BACKENDS: "headless"
             WLR_HEADLESS_OUTPUTS: "1"
