@@ -5,7 +5,8 @@ sway:
         description: |
             A headless Sway Wayland compositor, staged with a launcher wrapper and config and run as a supervised service.
             The sway candy installs the Sway compositor (plus Xwayland, fuzzel, and
-            Mesa GL/Vulkan drivers) on Fedora, strips the cap_sys_nice file capability
+            Mesa GL/Vulkan drivers) on Fedora and on Arch/CachyOS, strips the
+            cap_sys_nice file capability
             so the binary can exec inside a rootless user namespace, and stages a
             sway-wrapper launcher plus a config file under the user's home. A
             supervisord service runs the wrapper headless (WLR_BACKENDS=headless).
@@ -27,6 +28,27 @@ sway:
             - name: XKB_DEFAULT_VARIANT
               description: "XKB keyboard variant (e.g., dvorak, nodeadkeys). Default: none"
         distro:
+            # The `arch` section also covers CachyOS: that base declares
+            # `distro: [cachyos, arch]`, so the cascade resolves this section on both.
+            # Package-name mapping from the fedora list, all verified to resolve:
+            #   xorg-x11-server-Xwayland -> xorg-xwayland
+            #   mesa-dri-drivers         -> mesa (Arch ships the DRI drivers in mesa)
+            #   mesa-vulkan-drivers      -> vulkan-swrast (the software ICD; Arch splits
+            #                               Vulkan per vendor, and swrast is the one that
+            #                               works on a headless, GPU-less bed. A GPU
+            #                               consumer composes its own vulkan-radeon /
+            #                               vulkan-intel / nvidia stack.)
+            #   libglvnd-egl + -gles     -> libglvnd (one package on Arch)
+            arch:
+                package:
+                    - sway
+                    - xorg-xwayland
+                    - fuzzel
+                    - mesa
+                    - vulkan-swrast
+                    - libglvnd
+                    - egl-wayland
+                    - wlr-randr
             fedora:
                 package:
                     - sway
