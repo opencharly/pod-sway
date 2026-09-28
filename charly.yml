@@ -1,7 +1,5 @@
-version: 2026.232.0520
 sway:
     candy:
-        version: 2026.144.1443
         description: |
             A headless Sway Wayland compositor, staged with a launcher wrapper and config and run as a supervised service.
             The sway candy installs the Sway compositor (plus Xwayland, fuzzel, and
